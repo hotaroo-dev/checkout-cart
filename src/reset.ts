@@ -128,7 +128,7 @@ export const reset = css`
   body {
     height: 100%;
     margin: 0;
-    line-height: 1.5;
+    line-height: 1.2;
     color: #121212;
   }
 `
