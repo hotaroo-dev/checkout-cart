@@ -1,4 +1,24 @@
-import type { Theme } from '@emotion/react'
+interface Theme {
+  color: {
+    primary: {
+      [index: string]: string
+      red: string
+      yellow: string
+      blue: string
+    }
+    secondary: {
+      [index: string]: string
+      orange: string
+      green: string
+      purple: string
+    }
+    grayscale: {
+      [index: string]: string
+      lightGray: string
+      darkGray: string
+    }
+  }
+}
 
 export const theme: Theme = {
   color: {
