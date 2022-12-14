@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled from '@emotion/styled'
+import { motion } from 'framer-motion'
 import { colors, ICard } from '../colors'
 import { theme } from '../theme'
-import { useSetCount } from '../routes/root'
+import { useCustomContext } from '../routes/root'
 
-const Container = styled.main`
+const Container = styled(motion.main)`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 2rem;
@@ -28,7 +29,7 @@ const Card = styled.div`
   }
 `
 
-const Color = styled.div<{ bgColor: string }>`
+export const Color = styled.div<{ bgColor: string }>`
   width: 100%;
   aspect-ratio: 7 / 5;
   background-color: ${props => props.bgColor};
@@ -41,7 +42,7 @@ const Overview = styled.div`
   align-items: flex-end;
 `
 
-const Info = styled.div`
+export const Info = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -71,18 +72,38 @@ const Add = styled.button`
   }
 `
 
+const containerVariants = {
+  hidden: { opacity: 0.65, y: 50 },
+  visible: { opacity: 1, y: 0 },
+  exit: { opacity: 0.65, y: -50 }
+}
+
 const Cards: React.FC = () => {
-  const [cart, setCart] = useState<ICard[]>([])
-  const { setCount } = useSetCount()
+  const { setCount, setCarts } = useCustomContext()
 
-  const cartIncrement = () => setCount(count => count + 1)
+  const addToCart = (card: ICard) => {
+    setCarts(carts => {
+      const index = carts.findIndex(cart => cart.id === card.id)
+      if (index !== -1) {
+        return carts.map((cart, i) =>
+          i === index ? { ...cart, count: cart.count + 1 } : cart
+        )
+      }
 
-  const addCart = () => {
-    cartIncrement()
+      return [...carts, { ...card, count: 1 }]
+    })
+
+    setCount(count => count + 1)
   }
 
   return (
-    <Container>
+    <Container
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+      transition={{ type: 'spring', stiffness: 75, duration: 1.5 }}
+    >
       {colors.map(card => (
         <Card key={card.id}>
           <Color
@@ -98,7 +119,7 @@ const Cards: React.FC = () => {
               <h4>{card.color[0].toUpperCase() + card.color.substring(1)}</h4>
               <p>${card.price}.00</p>
             </Info>
-            <Add onClick={addCart}>Add to Card</Add>
+            <Add onClick={() => addToCart(card)}>Add to Card</Add>
           </Overview>
         </Card>
       ))}

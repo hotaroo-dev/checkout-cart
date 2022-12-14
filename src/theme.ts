@@ -33,7 +33,7 @@ export const theme: Theme = {
       purple: '#805AD5'
     },
     grayscale: {
-      lightGray: '#d0d0d0',
+      lightGray: '#dddddd',
       darkGray: '#505050'
     }
   }

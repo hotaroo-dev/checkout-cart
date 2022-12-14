@@ -116,7 +116,7 @@ export const reset = css`
       'Helvetica Neue', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-color: rgb(240 231 228);
+    background-color: rgb(240 231 230);
   }
 
   code {
