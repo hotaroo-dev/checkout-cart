@@ -12,7 +12,7 @@ type IColor =
       color: 'light Gray' | 'dark Gray'
     }
 
-interface ICard {
+export interface ICard {
   id: number
   type: IColor['type']
   color: IColor['color']

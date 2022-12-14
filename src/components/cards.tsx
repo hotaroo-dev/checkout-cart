@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from '@emotion/styled'
-import { colors } from '../colors'
+import { colors, ICard } from '../colors'
 import { theme } from '../theme'
+import { useSetCount } from '../routes/root'
 
 const Container = styled.main`
   display: grid;
@@ -71,6 +72,15 @@ const Add = styled.button`
 `
 
 const Cards: React.FC = () => {
+  const [cart, setCart] = useState<ICard[]>([])
+  const { setCount } = useSetCount()
+
+  const cartIncrement = () => setCount(count => count + 1)
+
+  const addCart = () => {
+    cartIncrement()
+  }
+
   return (
     <Container>
       {colors.map(card => (
@@ -78,15 +88,17 @@ const Cards: React.FC = () => {
           <Color
             bgColor={theme.color[card.type][card.color.replace(/\s/g, '')]}
           />
+
           <p>
             {card.type} {card.type !== 'grayscale' ? 'color' : null}
           </p>
+
           <Overview>
             <Info>
               <h4>{card.color[0].toUpperCase() + card.color.substring(1)}</h4>
               <p>${card.price}.00</p>
             </Info>
-            <Add onClick={e => console.log(e.target)}>Add to Card</Add>
+            <Add onClick={addCart}>Add to Card</Add>
           </Overview>
         </Card>
       ))}
