@@ -13,7 +13,7 @@ const Container = styled(motion.main)`
   padding: 2.2rem 4rem;
 `
 
-const Card = styled.div`
+const Card = styled(motion.div)`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -74,9 +74,19 @@ const Add = styled.button`
 `
 
 const containerVariants = {
-  hidden: { opacity: 0.65, y: 50 },
-  visible: { opacity: 1, y: 0 },
-  exit: { opacity: 0.65, y: -50 }
+  hidden: { opacity: 0.65 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.15 } }
+}
+
+const cardVariants = {
+  hidden: {
+    y: 10,
+    opacity: 0
+  },
+  visible: {
+    y: 0,
+    opacity: 1
+  }
 }
 
 const Cards: React.FC = () => {
@@ -109,7 +119,7 @@ const Cards: React.FC = () => {
       transition={{ type: 'spring', stiffness: 50, duration: 1.5 }}
     >
       {colors.map(card => (
-        <Card key={card.id}>
+        <Card key={card.id} variants={cardVariants}>
           <Color
             bgColor={theme.color[card.type][card.color.replace(/\s/g, '')]}
           />

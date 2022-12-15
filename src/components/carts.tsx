@@ -18,13 +18,6 @@ const Container = styled(motion.section)`
   border-radius: 5px;
   box-shadow: 0 0px 1px hsla(0, 0%, 0%, 0.2), 0 1px 2px hsla(0, 0%, 0%, 0.2);
   transform-origin: top right;
-
-  & > p {
-    margin-bottom: 1rem;
-    text-align: center;
-    font-weight: 500;
-    color: #525252;
-  }
 `
 
 const CartWrapper = styled.div`
@@ -33,6 +26,13 @@ const CartWrapper = styled.div`
   column-gap: 1rem;
   row-gap: 1.5rem;
   margin-bottom: 1rem;
+`
+
+const Text = styled(motion.p)`
+  grid-column: 2 span;
+  text-align: center;
+  font-weight: 500;
+  color: #525252;
 `
 
 const Cart = styled(motion.div)`
@@ -176,10 +176,10 @@ const Carts: React.FC<Props> = ({
 
   const deleteCart = (cart: ICard) => {
     setCarts(carts => carts.filter(c => c.id !== cart.id))
-    setCount(count => count - 1)
+    setCount(count => count - cart.count)
 
     removeLocalCart(cart)
-    localStorage.setItem('count', String(count - 1))
+    localStorage.setItem('count', String(count - cart.count))
   }
 
   useEffect(() => {
@@ -195,20 +195,16 @@ const Carts: React.FC<Props> = ({
         animate={cartOpen ? 'expended' : 'collapsed'}
         transition={{ type: 'tween', duration: 0.25 }}
       >
-        {carts.length ? (
-          <CartWrapper>
-            <AnimatePresence>
-              {carts.map((cart, i) => (
+        <CartWrapper>
+          <AnimatePresence>
+            {carts.length ? (
+              carts.map((cart, i) => (
                 <Cart
                   key={cart.id}
                   variants={cartVariants}
                   initial={(i + 1) % 2 === 0 ? 'even' : 'odd'}
                   exit={(i + 1) % 2 === 0 ? 'even' : 'odd'}
-                  transition={{
-                    type: 'spring',
-                    stiffness: 50,
-                    duration: 0.4
-                  }}
+                  transition={{ type: 'spring', stiffness: 50, duration: 0.4 }}
                   animate="visible"
                 >
                   <Color
@@ -227,12 +223,20 @@ const Carts: React.FC<Props> = ({
                     <Close onClick={() => deleteCart(cart)}>&times;</Close>
                   </CartInfo>
                 </Cart>
-              ))}
-            </AnimatePresence>
-          </CartWrapper>
-        ) : (
-          <p>No Cart</p>
-        )}
+              ))
+            ) : (
+              <Text
+                onClick={() => localStorage.setItem('count', '0')}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.25, delay: 0.4 }}
+              >
+                No Cart
+              </Text>
+            )}
+          </AnimatePresence>
+        </CartWrapper>
+
         <Total>
           total <span>${total}.00</span>
         </Total>
