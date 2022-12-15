@@ -1,7 +1,13 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import styled from '@emotion/styled'
+
+const Container = styled.header`
+  position: sticky;
+  top: 0;
+  backdrop-filter: blur(2px) saturate(1.1);
+`
 
 const Nav = styled.nav`
   display: flex;
@@ -85,13 +91,7 @@ const Header: React.FC<Props> = ({ count, setCartOpen }) => {
   const { pathname } = useLocation()
 
   return (
-    <header
-      style={{
-        position: 'sticky',
-        top: 0,
-        backdropFilter: 'blur(2px) saturate(1.2)'
-      }}
-    >
+    <Container>
       <Nav>
         <Items>
           <Item>
@@ -121,7 +121,7 @@ const Header: React.FC<Props> = ({ count, setCartOpen }) => {
           <Circle>{count}</Circle>
         </Cart>
       </Nav>
-    </header>
+    </Container>
   )
 }
 
