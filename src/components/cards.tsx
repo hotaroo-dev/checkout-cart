@@ -8,7 +8,7 @@ import { saveLocalCart } from '../localStorage'
 
 const Container = styled(motion.main)`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 2rem;
   padding: 2.2rem 4rem;
 `
@@ -74,8 +74,8 @@ const Add = styled.button`
 `
 
 const containerVariants = {
-  hidden: { opacity: 0.65 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.15 } }
+  hidden: { y: 10, opacity: 0.65 },
+  visible: { y: 0, opacity: 1, transition: { staggerChildren: 0.1 } }
 }
 
 const cardVariants = {
@@ -119,7 +119,10 @@ const Cards: React.FC = () => {
       transition={{ type: 'spring', stiffness: 50, duration: 1.5 }}
     >
       {colors.map(card => (
-        <Card key={card.id} variants={cardVariants}>
+        <Card
+          key={card.id}
+          variants={window.innerWidth >= 640 ? cardVariants : undefined}
+        >
           <Color
             bgColor={theme.color[card.type][card.color.replace(/\s/g, '')]}
           />

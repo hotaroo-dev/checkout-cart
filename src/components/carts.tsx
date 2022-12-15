@@ -11,7 +11,7 @@ const Container = styled(motion.section)`
   width: 100%;
   max-width: 380px;
   padding: 1rem;
-  position: absolute;
+  position: fixed;
   top: 75px;
   right: 20px;
   background-color: #f8f4ed;
@@ -226,7 +226,6 @@ const Carts: React.FC<Props> = ({
               ))
             ) : (
               <Text
-                onClick={() => localStorage.setItem('count', '0')}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.25, delay: 0.4 }}

@@ -85,7 +85,13 @@ const Header: React.FC<Props> = ({ count, setCartOpen }) => {
   const { pathname } = useLocation()
 
   return (
-    <header>
+    <header
+      style={{
+        position: 'sticky',
+        top: 0,
+        backdropFilter: 'blur(2px) saturate(1.2)'
+      }}
+    >
       <Nav>
         <Items>
           <Item>
