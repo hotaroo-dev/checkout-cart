@@ -1,14 +1,15 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from '@emotion/styled'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ICard } from '../colors'
 import { Color, Info } from './cards'
 import { theme } from '../theme'
+import { checkLocalStorage, removeLocalCart } from '../localStorage'
 
 const Container = styled(motion.section)`
   z-index: 2;
   width: 100%;
-  max-width: 365px;
+  max-width: 380px;
   padding: 1rem;
   position: absolute;
   top: 75px;
@@ -17,13 +18,20 @@ const Container = styled(motion.section)`
   border-radius: 5px;
   box-shadow: 0 0px 1px hsla(0, 0%, 0%, 0.2), 0 1px 2px hsla(0, 0%, 0%, 0.2);
   transform-origin: top right;
+
+  & > p {
+    margin-bottom: 1rem;
+    text-align: center;
+    font-weight: 500;
+    color: #525252;
+  }
 `
 
 const CartWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   column-gap: 1rem;
-  row-gap: 1.8rem;
+  row-gap: 1.5rem;
   margin-bottom: 1rem;
 `
 
@@ -117,11 +125,15 @@ const Checkout = styled.button`
 const cartsVariants = {
   expended: {
     opacity: 1,
-    scale: 1
+    scale: 1,
+    display: 'inline-block'
   },
   collapsed: {
     opacity: 0,
-    scale: 0.9
+    scale: 0.9,
+    transitionEnd: {
+      display: 'none'
+    }
   }
 }
 
@@ -144,12 +156,19 @@ const cartVariants = {
 
 interface Props {
   carts: ICard[]
+  count: number
   setCarts: React.Dispatch<React.SetStateAction<ICard[]>>
   setCount: React.Dispatch<React.SetStateAction<number>>
   cartOpen: boolean
 }
 
-const Carts: React.FC<Props> = ({ carts, setCarts, setCount, cartOpen }) => {
+const Carts: React.FC<Props> = ({
+  carts,
+  setCarts,
+  count,
+  setCount,
+  cartOpen
+}) => {
   const total = carts.reduce(
     (currentTotal, { price, count }) => currentTotal + price * count,
     0
@@ -158,7 +177,15 @@ const Carts: React.FC<Props> = ({ carts, setCarts, setCount, cartOpen }) => {
   const deleteCart = (cart: ICard) => {
     setCarts(carts => carts.filter(c => c.id !== cart.id))
     setCount(count => count - 1)
+
+    removeLocalCart(cart)
+    localStorage.setItem('count', String(count - 1))
   }
+
+  useEffect(() => {
+    setCarts(checkLocalStorage())
+    setCount(Number(localStorage.getItem('count')))
+  }, [])
 
   return (
     <>
@@ -168,37 +195,44 @@ const Carts: React.FC<Props> = ({ carts, setCarts, setCount, cartOpen }) => {
         animate={cartOpen ? 'expended' : 'collapsed'}
         transition={{ type: 'tween', duration: 0.25 }}
       >
-        <CartWrapper>
-          <AnimatePresence>
-            {carts.map((cart, i) => (
-              <Cart
-                key={cart.id}
-                variants={cartVariants}
-                initial={(i + 1) % 2 === 0 ? 'even' : 'odd'}
-                exit={(i + 1) % 2 === 0 ? 'even' : 'odd'}
-                transition={{ type: 'spring', stiffness: 50, duration: 0.4 }}
-                animate="visible"
-              >
-                <Color
-                  bgColor={
-                    theme.color[cart.type][cart.color.replace(/\s/g, '')]
-                  }
-                />
+        {carts.length ? (
+          <CartWrapper>
+            <AnimatePresence>
+              {carts.map((cart, i) => (
+                <Cart
+                  key={cart.id}
+                  variants={cartVariants}
+                  initial={(i + 1) % 2 === 0 ? 'even' : 'odd'}
+                  exit={(i + 1) % 2 === 0 ? 'even' : 'odd'}
+                  transition={{
+                    type: 'spring',
+                    stiffness: 50,
+                    duration: 0.4
+                  }}
+                  animate="visible"
+                >
+                  <Color
+                    bgColor={
+                      theme.color[cart.type][cart.color.replace(/\s/g, '')]
+                    }
+                  />
 
-                <CartInfo>
-                  <h4>
-                    {cart.color[0].toUpperCase() + cart.color.substring(1)}{' '}
-                    <span>x{cart.count}</span>
-                  </h4>
-                  <p>${cart.price}.00</p>
+                  <CartInfo>
+                    <h4>
+                      {cart.color[0].toUpperCase() + cart.color.substring(1)}{' '}
+                      <span>x{cart.count}</span>
+                    </h4>
+                    <p>${cart.price}.00</p>
 
-                  <Close onClick={() => deleteCart(cart)}>&times;</Close>
-                </CartInfo>
-              </Cart>
-            ))}
-          </AnimatePresence>
-        </CartWrapper>
-
+                    <Close onClick={() => deleteCart(cart)}>&times;</Close>
+                  </CartInfo>
+                </Cart>
+              ))}
+            </AnimatePresence>
+          </CartWrapper>
+        ) : (
+          <p>No Cart</p>
+        )}
         <Total>
           total <span>${total}.00</span>
         </Total>

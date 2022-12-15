@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { colors, ICard } from '../colors'
 import { theme } from '../theme'
 import { useCustomContext } from '../routes/root'
+import { saveLocalCart } from '../localStorage'
 
 const Container = styled(motion.main)`
   display: grid;
@@ -79,14 +80,14 @@ const containerVariants = {
 }
 
 const Cards: React.FC = () => {
-  const { setCount, setCarts } = useCustomContext()
+  const { count, setCount, setCarts } = useCustomContext()
 
   const addToCart = (card: ICard) => {
     setCarts(carts => {
-      const index = carts.findIndex(cart => cart.id === card.id)
-      if (index !== -1) {
+      const cardIndex = carts.findIndex(cart => cart.id === card.id)
+      if (cardIndex !== -1) {
         return carts.map((cart, i) =>
-          i === index ? { ...cart, count: cart.count + 1 } : cart
+          i === cardIndex ? { ...cart, count: cart.count + 1 } : cart
         )
       }
 
@@ -94,6 +95,9 @@ const Cards: React.FC = () => {
     })
 
     setCount(count => count + 1)
+
+    saveLocalCart({ ...card, count: 1 })
+    localStorage.setItem('count', String(count + 1))
   }
 
   return (
@@ -102,7 +106,7 @@ const Cards: React.FC = () => {
       initial="hidden"
       animate="visible"
       exit="exit"
-      transition={{ type: 'spring', stiffness: 75, duration: 1.5 }}
+      transition={{ type: 'spring', stiffness: 50, duration: 1.5 }}
     >
       {colors.map(card => (
         <Card key={card.id}>

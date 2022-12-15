@@ -5,6 +5,7 @@ import Carts from '../components/carts'
 import { ICard } from '../colors'
 
 interface IContext {
+  count: number
   setCount: React.Dispatch<React.SetStateAction<number>>
   setCarts: React.Dispatch<React.SetStateAction<ICard[]>>
 }
@@ -21,11 +22,12 @@ const Root: React.FC = () => {
       <Header count={count} setCartOpen={setCartOpen} />
       <Carts
         carts={carts}
+        count={count}
         cartOpen={cartOpen}
         setCarts={setCarts}
         setCount={setCount}
       />
-      <Outlet context={{ setCount, setCarts }} />
+      <Outlet context={{ count, setCount, setCarts }} />
     </>
   )
 }
