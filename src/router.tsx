@@ -1,11 +1,11 @@
-import { createBrowserRouter } from 'react-router-dom'
+import { createHashRouter } from 'react-router-dom'
 import Root from './routes/root'
 import ErrorPage from './routes/error-page'
 import Index from './routes'
 import Store from './routes/store'
 import Team from './routes/team'
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: '/',
     element: <Root />,
