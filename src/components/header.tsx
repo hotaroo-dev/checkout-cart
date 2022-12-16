@@ -15,6 +15,7 @@ const Nav = styled.nav`
 `
 
 const Items = styled.ul`
+  margin-left: 40px;
   flex: 1;
   display: flex;
   justify-content: center;

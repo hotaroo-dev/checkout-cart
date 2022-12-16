@@ -2,7 +2,6 @@ import React from 'react'
 import styled from '@emotion/styled'
 
 export const Container = styled.main`
-  width: calc(100% - 38px);
   display: flex;
   align-item: center;
 
