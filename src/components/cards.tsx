@@ -8,9 +8,9 @@ import { saveLocalCart } from '../localStorage'
 
 const Container = styled(motion.main)`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(232px, 1fr));
   gap: 2rem;
-  padding: 2.2rem 4rem;
+  padding: 2.2rem 4.5rem;
 `
 
 const Card = styled(motion.div)`

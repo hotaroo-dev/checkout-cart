@@ -19,4 +19,11 @@
   <img src="./public/demo.png"/>
 </p>
 
-<p></p>
+<br />
+
+## 📓 Todo
+
+- [x] single-page application 📜
+- [x] add item to cart ➕
+- [x] delete item ➖
+- [ ] Implement checkout with stripe 💳
