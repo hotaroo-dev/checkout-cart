@@ -7,7 +7,7 @@ import { useCustomContext } from '../routes/root'
 
 const Container = styled(motion.main)`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(232px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 2rem;
   padding: 2.2rem 4.5rem;
 `
@@ -106,7 +106,7 @@ const Cards: React.FC = () => {
       {colors.map(card => (
         <Card
           key={card.id}
-          variants={window.innerWidth >= 640 ? cardVariants : undefined}
+          variants={window.innerWidth >= 656 ? cardVariants : undefined}
         >
           <Color
             bgColor={theme.color[card.type][card.color.replace(/\s/g, '')]}
