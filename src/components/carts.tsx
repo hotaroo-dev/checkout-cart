@@ -226,8 +226,8 @@ const Carts: React.FC<Props> = ({
               ))
             ) : (
               <Text
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
+                initial={{ opacity: 0, display: 'none' }}
+                animate={{ opacity: 1, display: 'inline-block' }}
                 transition={{ duration: 0.25, delay: 0.4 }}
               >
                 No Cart

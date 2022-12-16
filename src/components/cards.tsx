@@ -75,7 +75,8 @@ const Add = styled.button`
 
 const containerVariants = {
   hidden: { y: 10, opacity: 0.65 },
-  visible: { y: 0, opacity: 1, transition: { staggerChildren: 0.1 } }
+  visible: { y: 0, opacity: 1, transition: { staggerChildren: 0.1 } },
+  exit: { y: -10, opacity: 0.65 }
 }
 
 const cardVariants = {
@@ -86,6 +87,10 @@ const cardVariants = {
   visible: {
     y: 0,
     opacity: 1
+  },
+  exit: {
+    y: -10,
+    opacity: 0
   }
 }
 
@@ -115,7 +120,6 @@ const Cards: React.FC = () => {
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      exit="exit"
       transition={{ type: 'spring', stiffness: 50, duration: 1.5 }}
     >
       {colors.map(card => (
