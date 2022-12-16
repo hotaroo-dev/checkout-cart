@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import styled from '@emotion/styled'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ICard } from '../colors'
 import { Color, Info } from './cards'
 import { theme } from '../theme'
-import { checkLocalStorage, removeLocalCart } from '../localStorage'
 
 const Container = styled(motion.section)`
   z-index: 2;
@@ -156,36 +155,15 @@ const cartVariants = {
 
 interface Props {
   carts: ICard[]
-  count: number
-  setCarts: React.Dispatch<React.SetStateAction<ICard[]>>
-  setCount: React.Dispatch<React.SetStateAction<number>>
   cartOpen: boolean
+  deleteCart: (cart: ICard) => void
 }
 
-const Carts: React.FC<Props> = ({
-  carts,
-  setCarts,
-  count,
-  setCount,
-  cartOpen
-}) => {
+const Carts: React.FC<Props> = ({ carts, cartOpen, deleteCart }) => {
   const total = carts.reduce(
     (currentTotal, { price, count }) => currentTotal + price * count,
     0
   )
-
-  const deleteCart = (cart: ICard) => {
-    setCarts(carts => carts.filter(c => c.id !== cart.id))
-    setCount(count => count - cart.count)
-
-    removeLocalCart(cart)
-    localStorage.setItem('count', String(count - cart.count))
-  }
-
-  useEffect(() => {
-    setCarts(checkLocalStorage())
-    setCount(Number(localStorage.getItem('count')))
-  }, [])
 
   return (
     <>

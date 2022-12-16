@@ -1,10 +1,9 @@
 import React from 'react'
 import styled from '@emotion/styled'
 import { motion } from 'framer-motion'
-import { colors, ICard } from '../colors'
+import { colors } from '../colors'
 import { theme } from '../theme'
 import { useCustomContext } from '../routes/root'
-import { saveLocalCart } from '../localStorage'
 
 const Container = styled(motion.main)`
   display: grid;
@@ -95,25 +94,7 @@ const cardVariants = {
 }
 
 const Cards: React.FC = () => {
-  const { count, setCount, setCarts } = useCustomContext()
-
-  const addToCart = (card: ICard) => {
-    setCarts(carts => {
-      const cardIndex = carts.findIndex(cart => cart.id === card.id)
-      if (cardIndex !== -1) {
-        return carts.map((cart, i) =>
-          i === cardIndex ? { ...cart, count: cart.count + 1 } : cart
-        )
-      }
-
-      return [...carts, { ...card, count: 1 }]
-    })
-
-    setCount(count => count + 1)
-
-    saveLocalCart({ ...card, count: 1 })
-    localStorage.setItem('count', String(count + 1))
-  }
+  const { addToCart } = useCustomContext()
 
   return (
     <Container
