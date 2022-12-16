@@ -152,6 +152,7 @@ Error generating stack: `+i.message+`
   display: flex;
   padding: 1.25rem;
 `,GP=oe.ul`
+  margin-left: 40px;
   flex: 1;
   display: flex;
   justify-content: center;
@@ -381,7 +382,6 @@ Error generating stack: `+i.message+`
     color: #818181;
   }
 `,C2=()=>{const e=Zg();return de(S2,{children:[z("h1",{children:"Oops!"}),z("p",{children:"Sorry, an unexpected error has occurred."}),z("p",{children:z("i",{children:e.statusText||e.message})})]})},S0=oe.main`
-  width: calc(100% - 38px);
   display: flex;
   align-item: center;
 
