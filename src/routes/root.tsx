@@ -16,7 +16,6 @@ export const useCustomContext = () => useOutletContext<IContext>()
 const Root: React.FC = () => {
   const [carts, setCarts] = useState<ICard[]>([])
   const [cartOpen, setCartOpen] = useState(false)
-  const [count, setCount] = useState(0)
 
   const addToCart = useCallback(
     (card: ICard) => {
@@ -30,36 +29,30 @@ const Root: React.FC = () => {
 
         return [...carts, { ...card, count: 1 }]
       })
-      setCount(count => count + 1)
-
       saveLocalCart({ ...card, count: 1 })
-      localStorage.setItem('count', String(count + 1))
     },
-    [carts, count]
+    [carts]
   )
 
   const deleteCart = useCallback(
     (cart: ICard) => {
       setCarts(carts => carts.filter(c => c.id !== cart.id))
-      setCount(count => count - cart.count)
-
       removeLocalCart(cart)
-      localStorage.setItem('count', String(count - cart.count))
     },
-    [carts, count]
+    [carts]
   )
+
+  const toggleCart = () => {
+    setCartOpen(cartOpen => !cartOpen)
+  }
 
   useEffect(() => {
     setCarts(checkLocalStorage())
-    setCount(Number(localStorage.getItem('count')))
   }, [])
 
   return (
     <>
-      <Header
-        count={count}
-        toggleCart={() => setCartOpen(cartOpen => !cartOpen)}
-      />
+      <Header carts={carts} toggleCart={toggleCart} />
       <Carts carts={carts} cartOpen={cartOpen} deleteCart={deleteCart} />
       <Outlet context={{ addToCart }} />
     </>
