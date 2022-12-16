@@ -160,10 +160,7 @@ interface Props {
 }
 
 const Carts: React.FC<Props> = ({ carts, cartOpen, deleteCart }) => {
-  const total = carts.reduce(
-    (currentTotal, { price, count }) => currentTotal + price * count,
-    0
-  )
+  const total = carts.reduce((sum, { price, count }) => sum + price * count, 0)
 
   return (
     <>
