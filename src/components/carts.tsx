@@ -112,8 +112,12 @@ const Checkout = styled.button`
   padding: 0.65rem 1.25rem;
   background-color: #38b2ac;
   border-radius: 5px;
-  box-shadow: 0 0px 1px hsla(0, 0%, 0%, 0.6), 0 1px 2px hsla(0, 0%, 0%, 0.2);
+  box-shadow: 0 0px 1px hsla(0, 0%, 0%, 0.2), 0 1px 2px hsla(0, 0%, 0%, 0.2);
   border: none;
+
+  &:hover {
+    box-shadow: 0 0px 2px hsla(0, 0%, 0%, 0.6), 0 1px 2px hsla(0, 0%, 0%, 0.2);
+  }
 
   &:active {
     box-shadow: 0 0px 1px hsla(0, 0%, 0%, 0.4);
