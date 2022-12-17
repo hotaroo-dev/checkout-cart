@@ -9,14 +9,16 @@ export const checkLocalStorage = () => {
   return []
 }
 
+export const isContains = (carts: ICard[], cart: ICard) =>
+  carts.some(c => c.id === cart.id)
+
 export const saveLocalCart = (cart: ICard) => {
   let carts = checkLocalStorage() as ICard[]
-  const isContains = carts.some(c => c.id === cart.id)
-  isContains
+  isContains(carts, cart)
     ? (carts = carts.map(c =>
-        c.id === cart.id ? { ...c, count: c.count + 1 } : c
+        c.id === cart.id ? { ...c, count: c.count && c.count + 1 } : c
       ))
-    : carts.push(cart)
+    : carts.push({ ...cart, count: 1 })
 
   localStorage.setItem('carts', JSON.stringify(carts))
 }

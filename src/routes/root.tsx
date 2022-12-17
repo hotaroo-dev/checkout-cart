@@ -1,9 +1,10 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { Outlet, useOutletContext } from 'react-router-dom'
 import Header from '../components/header'
 import Carts from '../components/carts'
 import { ICard } from '../colors'
 import {
+  isContains,
   checkLocalStorage,
   removeLocalCart,
   saveLocalCart
@@ -14,21 +15,22 @@ type IContext = { addToCart: (card: ICard) => void }
 export const useCustomContext = () => useOutletContext<IContext>()
 
 const Root: React.FC = () => {
-  const [carts, setCarts] = useState<ICard[]>([])
+  const [carts, setCarts] = useState<ICard[]>(checkLocalStorage())
   const [cartOpen, setCartOpen] = useState(false)
 
   const addToCart = useCallback(
     (card: ICard) => {
-      setCarts(carts => {
-        const isContains = carts.some(cart => cart.id === card.id)
-        if (isContains) {
-          return carts.map(cart =>
-            cart.id === card.id ? { ...card, count: cart.count + 1 } : cart
-          )
-        }
-        return [...carts, { ...card, count: 1 }]
-      })
-      saveLocalCart({ ...card, count: 1 })
+      setCarts(carts =>
+        isContains(carts, card)
+          ? carts.map(cart =>
+              cart.id === card.id
+                ? { ...card, count: cart.count && cart.count + 1 }
+                : cart
+            )
+          : [...carts, { ...card, count: 1 }]
+      )
+
+      saveLocalCart(card)
     },
     [carts]
   )
@@ -44,10 +46,6 @@ const Root: React.FC = () => {
   const toggleCart = () => {
     setCartOpen(cartOpen => !cartOpen)
   }
-
-  useEffect(() => {
-    setCarts(checkLocalStorage())
-  }, [])
 
   return (
     <>
