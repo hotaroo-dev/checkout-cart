@@ -85,7 +85,7 @@ interface Props {
 
 const Header: React.FC<Props> = ({ carts, toggleCart }) => {
   const { pathname } = useLocation()
-  const cartCount = carts.reduce((sum, { count }) => sum + count, 0)
+  const cartCount = carts.reduce((sum, { count }) => sum + (count || 0), 0)
 
   return (
     <Nav>
