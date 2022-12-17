@@ -20,13 +20,12 @@ const Root: React.FC = () => {
   const addToCart = useCallback(
     (card: ICard) => {
       setCarts(carts => {
-        const cardIndex = carts.findIndex(cart => cart.id === card.id)
-        if (cardIndex !== -1) {
-          return carts.map((cart, i) =>
-            i === cardIndex ? { ...cart, count: cart.count + 1 } : cart
+        const isContains = carts.some(cart => cart.id === card.id)
+        if (isContains) {
+          return carts.map(cart =>
+            cart.id === card.id ? { ...card, count: cart.count + 1 } : cart
           )
         }
-
         return [...carts, { ...card, count: 1 }]
       })
       saveLocalCart({ ...card, count: 1 })

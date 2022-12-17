@@ -9,15 +9,12 @@ export const checkLocalStorage = () => {
   return []
 }
 
-const getIndex = (carts: ICard[], cart: ICard) =>
-  carts.findIndex(c => c.id === cart.id)
-
 export const saveLocalCart = (cart: ICard) => {
   let carts = checkLocalStorage() as ICard[]
-  const cartIndex = getIndex(carts, cart)
-  cartIndex !== -1
-    ? (carts = carts.map((cart, i) =>
-        i == cartIndex ? { ...cart, count: cart.count + 1 } : cart
+  const isContains = carts.some(c => c.id === cart.id)
+  isContains
+    ? (carts = carts.map(c =>
+        c.id === cart.id ? { ...c, count: c.count + 1 } : c
       ))
     : carts.push(cart)
 
