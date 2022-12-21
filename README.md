@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="140px" src="./client/public/cart.png" />
+  <img width="140px" src="./public/cart.png" />
 </p>
 <h2 align="center">Checkout Cart</h2>
 <p align="center"><b>Ingredients</b></p>
@@ -16,7 +16,7 @@
 ## 🗺️ Projects!
 
 <p align="center">
-  <img src="./client/public/demo.png"/>
+  <img src="./public/demo.png"/>
 </p>
 <p align="center">
   <a href="https://Rolo-coding.github.io/checkout-cart"> 🖥️ Live Demo</a>
