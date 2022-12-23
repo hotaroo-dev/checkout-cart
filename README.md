@@ -16,7 +16,7 @@
 ## 🗺️ Projects!
 
 <p align="center">
-  <img src="./public/demo.png"/>
+  <img src="./public/demo.jpg"/>
 </p>
 <p align="center">
   <a href="https://Rolo-coding.github.io/checkout-cart"> 🖥️ Live Demo</a>
