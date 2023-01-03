@@ -19,7 +19,7 @@
   <img src="./public/demo.jpg"/>
 </p>
 <p align="center">
-  <a href="https://Rolo-coding.github.io/checkout-cart"> 🖥️ Live Demo</a>
+  <a href="https://hotaroo-dev.github.io/checkout-cart"> 🖥️ Live Demo</a>
 </p>
 
 <br />
