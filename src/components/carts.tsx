@@ -5,6 +5,76 @@ import { ICard } from '../colors'
 import { Color, Info } from './cards'
 import { theme } from '../theme'
 
+interface Props {
+  carts: ICard[]
+  cartOpen: boolean
+  deleteCart: (cart: ICard) => void
+}
+
+const Carts: React.FC<Props> = ({ carts, cartOpen, deleteCart }) => {
+  const total = carts.reduce(
+    (sum, { price, count }) => sum + price * (count || 0),
+    0
+  )
+
+  return (
+    <>
+      <Container
+        variants={cartsVariants}
+        initial={false}
+        animate={cartOpen ? 'expended' : 'collapsed'}
+        transition={{ type: 'tween', duration: 0.25 }}
+      >
+        <CartWrapper>
+          <AnimatePresence>
+            {carts.length ? (
+              carts.map((cart, i) => (
+                <Cart
+                  key={cart.id}
+                  variants={cartVariants}
+                  initial={(i + 1) % 2 === 0 ? 'even' : 'odd'}
+                  exit={(i + 1) % 2 === 0 ? 'even' : 'odd'}
+                  transition={{ type: 'spring', stiffness: 50, duration: 0.4 }}
+                  animate="visible"
+                >
+                  <Color
+                    bgColor={
+                      theme.color[cart.type][cart.color.replace(/\s/g, '')]
+                    }
+                  />
+
+                  <CartInfo>
+                    <h4>
+                      {cart.color[0].toUpperCase() + cart.color.substring(1)}{' '}
+                      <span>x{cart.count}</span>
+                    </h4>
+                    <p>${cart.price}.00</p>
+
+                    <Close onClick={() => deleteCart(cart)}>&times;</Close>
+                  </CartInfo>
+                </Cart>
+              ))
+            ) : (
+              <Text
+                initial={{ opacity: 0, display: 'none' }}
+                animate={{ opacity: 1, display: 'inline-block' }}
+                transition={{ duration: 0.25, delay: 0.4 }}
+              >
+                No Cart
+              </Text>
+            )}
+          </AnimatePresence>
+        </CartWrapper>
+
+        <Total>
+          total <span>${total}.00</span>
+        </Total>
+        <Checkout>Checkout</Checkout>
+      </Container>
+    </>
+  )
+}
+
 const Container = styled(motion.section)`
   z-index: 2;
   width: 100%;
@@ -155,76 +225,6 @@ const cartVariants = {
     x: 0,
     opacity: 1
   }
-}
-
-interface Props {
-  carts: ICard[]
-  cartOpen: boolean
-  deleteCart: (cart: ICard) => void
-}
-
-const Carts: React.FC<Props> = ({ carts, cartOpen, deleteCart }) => {
-  const total = carts.reduce(
-    (sum, { price, count }) => sum + price * (count || 0),
-    0
-  )
-
-  return (
-    <>
-      <Container
-        variants={cartsVariants}
-        initial={false}
-        animate={cartOpen ? 'expended' : 'collapsed'}
-        transition={{ type: 'tween', duration: 0.25 }}
-      >
-        <CartWrapper>
-          <AnimatePresence>
-            {carts.length ? (
-              carts.map((cart, i) => (
-                <Cart
-                  key={cart.id}
-                  variants={cartVariants}
-                  initial={(i + 1) % 2 === 0 ? 'even' : 'odd'}
-                  exit={(i + 1) % 2 === 0 ? 'even' : 'odd'}
-                  transition={{ type: 'spring', stiffness: 50, duration: 0.4 }}
-                  animate="visible"
-                >
-                  <Color
-                    bgColor={
-                      theme.color[cart.type][cart.color.replace(/\s/g, '')]
-                    }
-                  />
-
-                  <CartInfo>
-                    <h4>
-                      {cart.color[0].toUpperCase() + cart.color.substring(1)}{' '}
-                      <span>x{cart.count}</span>
-                    </h4>
-                    <p>${cart.price}.00</p>
-
-                    <Close onClick={() => deleteCart(cart)}>&times;</Close>
-                  </CartInfo>
-                </Cart>
-              ))
-            ) : (
-              <Text
-                initial={{ opacity: 0, display: 'none' }}
-                animate={{ opacity: 1, display: 'inline-block' }}
-                transition={{ duration: 0.25, delay: 0.4 }}
-              >
-                No Cart
-              </Text>
-            )}
-          </AnimatePresence>
-        </CartWrapper>
-
-        <Total>
-          total <span>${total}.00</span>
-        </Total>
-        <Checkout>Checkout</Checkout>
-      </Container>
-    </>
-  )
 }
 
 export default Carts

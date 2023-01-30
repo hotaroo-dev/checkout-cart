@@ -5,6 +5,39 @@ import { colors } from '../colors'
 import { theme } from '../theme'
 import { useCustomContext } from '../routes/root'
 
+const Cards: React.FC = () => {
+  const { addToCart } = useCustomContext()
+
+  return (
+    <Container
+      variants={{}}
+      initial="hidden"
+      animate="visible"
+      transition={{ staggerChildren: window.innerWidth >= 660 ? 0.1 : 0 }}
+    >
+      {colors.map(card => (
+        <Card key={card.id} variants={cardVariants}>
+          <Color
+            bgColor={theme.color[card.type][card.color.replace(/\s/g, '')]}
+          />
+
+          <p>
+            {card.type} {card.type !== 'grayscale' ? 'color' : null}
+          </p>
+
+          <Overview>
+            <Info>
+              <h4>{card.color[0].toUpperCase() + card.color.substring(1)}</h4>
+              <p>${card.price}.00</p>
+            </Info>
+            <Add onClick={() => addToCart(card)}>Add to Card</Add>
+          </Overview>
+        </Card>
+      ))}
+    </Container>
+  )
+}
+
 const Container = styled(motion.main)`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -76,12 +109,6 @@ const Add = styled.button`
   }
 `
 
-const containerVariants = {
-  hidden: { y: 10, opacity: 0.65 },
-  visible: { y: 0, opacity: 1, transition: { staggerChildren: 0.1 } },
-  exit: { y: -10, opacity: 0.65 }
-}
-
 const cardVariants = {
   hidden: {
     y: 10,
@@ -95,42 +122,6 @@ const cardVariants = {
     y: -10,
     opacity: 0
   }
-}
-
-const Cards: React.FC = () => {
-  const { addToCart } = useCustomContext()
-
-  return (
-    <Container
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
-      transition={{ type: 'spring', stiffness: 50, duration: 1.5 }}
-    >
-      {colors.map(card => (
-        <Card
-          key={card.id}
-          variants={window.innerWidth >= 656 ? cardVariants : undefined}
-        >
-          <Color
-            bgColor={theme.color[card.type][card.color.replace(/\s/g, '')]}
-          />
-
-          <p>
-            {card.type} {card.type !== 'grayscale' ? 'color' : null}
-          </p>
-
-          <Overview>
-            <Info>
-              <h4>{card.color[0].toUpperCase() + card.color.substring(1)}</h4>
-              <p>${card.price}.00</p>
-            </Info>
-            <Add onClick={() => addToCart(card)}>Add to Card</Add>
-          </Overview>
-        </Card>
-      ))}
-    </Container>
-  )
 }
 
 export default Cards
